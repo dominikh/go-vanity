@@ -178,8 +178,7 @@ func main() {
 	}()
 
 	http.HandleFunc("/", handler)
-	err := http.ListenAndServe("localhost:8080", nil)
-	if err != nil {
+	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
 }
