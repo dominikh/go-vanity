@@ -3,13 +3,40 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"sort"
 	"strings"
+	texttemplate "text/template"
 )
+
+var indexTmpl = template.Must(template.New("").Parse(`
+<html>
+  <body>
+    <ul>
+      {{range $pkg := .}}
+        <li><a href="{{$pkg.Name}}">{{$pkg.Name}}</a></li>
+      {{end}}
+    </ul>
+  </body>
+</html>
+`))
+
+var pkgTmpl = template.Must(template.New("").Parse(`
+<html>
+  <head>
+    <meta name="go-import" content="{{.Host}}/{{.Pkg.Name}} {{.Pkg.VCS}} {{.Pkg.URL}}">
+  </head>
+  <body>
+    Install: go get -u {{.Host}}/{{.Pkg.Name}} <br>
+    <a href="{{.Pkg.Documentation}}">Documentation</a><br>
+    <a href="{{.Pkg.Source}}">Source</a>
+  </body>
+</html>
+`))
 
 type Package struct {
 	VCS           string
@@ -34,20 +61,35 @@ func loadPackages() (map[string]Package, error) {
 	return packages, err
 }
 
+type Packages []Package
+
+func (p Packages) Len() int {
+	return len(p)
+}
+
+func (p Packages) Less(i int, j int) bool {
+	return p[i].Name < p[j].Name
+}
+
+func (p Packages) Swap(i int, j int) {
+	p[i], p[j] = p[j], p[i]
+}
+
 func serveIndex(w http.ResponseWriter, r *http.Request) {
 	packages, err := loadPackages()
 	if err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), 500)
 	}
-	var lines []string
-	for name := range packages {
-		lines = append(lines, fmt.Sprintf(`<li><a href="/go/%s">%s</a></li>`, name, name))
+	var pkgs Packages
+	for _, pkg := range packages {
+		pkgs = append(pkgs, pkg)
 	}
-	sort.StringSlice(lines).Sort()
-
-	html := fmt.Sprintf(`<html><body><ul>%s</ul></body></html>`, strings.Join(lines, ""))
-	_, _ = w.Write([]byte(html))
+	sort.Sort(pkgs)
+	err = indexTmpl.Execute(w, packages)
+	if err, ok := pkgTmpl.Execute(w, pkgs).(texttemplate.ExecError); ok {
+		log.Println("error executing package template:", err)
+	}
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -81,12 +123,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	html := fmt.Sprintf(`<html><head><meta name="go-import" content="%s/%s %s %s"></head><body>Install: go get -u %s/%s<br><a href="%s">Documentation</a><br><a href="%s">Source</a></body></html>`,
-		host, pkg.Name, pkg.VCS, pkg.URL,
-		host, pkg.Name,
-		pkg.Documentation, pkg.Source)
-
-	_, _ = w.Write([]byte(html))
+	type context struct {
+		Host string
+		Pkg  Package
+	}
+	if err, ok := pkgTmpl.Execute(w, context{host, pkg}).(texttemplate.ExecError); ok {
+		log.Println("error executing package template:", err)
+	}
 }
 
 func main() {
