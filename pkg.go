@@ -19,11 +19,14 @@ type Package struct {
 	Documentation string
 }
 
-var host = os.Getenv("GO_HOST")
+var (
+	host    = os.Getenv("PKGHOST")
+	pkgFile = os.Getenv("PKGFILE")
+)
 
 func loadPackages() (map[string]Package, error) {
 	var packages map[string]Package
-	data, err := ioutil.ReadFile("packages.json")
+	data, err := ioutil.ReadFile(pkgFile)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +91,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	if host == "" {
-		fmt.Fprintln(os.Stderr, "Please specify a valid host.")
+		fmt.Fprintln(os.Stderr, "Please specify a valid host with the PKGHOST environment variable")
+		os.Exit(1)
+	}
+	if pkgFile == "" {
+		fmt.Fprintln(os.Stderr, "Please specify a valid package file with the PKGFILE environment variable")
 		os.Exit(1)
 	}
 	http.HandleFunc("/", handler)
