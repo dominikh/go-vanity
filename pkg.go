@@ -11,6 +11,8 @@ import (
 	"sort"
 	"strings"
 	texttemplate "text/template"
+
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 var indexTmpl = template.Must(template.New("").Parse(`
@@ -37,6 +39,29 @@ var pkgTmpl = template.Must(template.New("").Parse(`
   </body>
 </html>
 `))
+
+var (
+	requests = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "pkg_requests_total",
+			Help: "Number of requests",
+		},
+		[]string{"path"},
+	)
+
+	errors = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "pkg_errors_total",
+			Help: "Number of errors",
+		},
+		[]string{"path"},
+	)
+)
+
+func init() {
+	prometheus.MustRegister(requests)
+	prometheus.MustRegister(errors)
+}
 
 type Package struct {
 	VCS           string
@@ -78,6 +103,7 @@ func (p Packages) Swap(i int, j int) {
 func serveIndex(w http.ResponseWriter, r *http.Request) {
 	packages, err := loadPackages()
 	if err != nil {
+		errors.WithLabelValues(r.URL.Path).Inc()
 		log.Println(err)
 		http.Error(w, err.Error(), 500)
 	}
@@ -88,11 +114,14 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 	sort.Sort(pkgs)
 	err = indexTmpl.Execute(w, packages)
 	if err, ok := pkgTmpl.Execute(w, pkgs).(texttemplate.ExecError); ok {
+		errors.WithLabelValues(r.URL.Path).Inc()
 		log.Println("error executing package template:", err)
 	}
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	requests.WithLabelValues(r.URL.Path).Inc()
+
 	if r.URL.Path == "/" {
 		serveIndex(w, r)
 		return
@@ -102,6 +131,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// and this allows the most easy updating of the list
 	packages, err := loadPackages()
 	if err != nil {
+		errors.WithLabelValues(r.URL.Path).Inc()
 		log.Println(err)
 		http.Error(w, err.Error(), 500)
 	}
@@ -126,6 +156,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		Pkg  Package
 	}
 	if err, ok := pkgTmpl.Execute(w, context{host, pkg}).(texttemplate.ExecError); ok {
+		errors.WithLabelValues(r.URL.Path).Inc()
 		log.Println("error executing package template:", err)
 	}
 }
@@ -139,6 +170,13 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Please specify a valid package file with the PKGFILE environment variable")
 		os.Exit(1)
 	}
+
+	go func() {
+		if err := http.ListenAndServe(":8081", prometheus.Handler()); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
 	http.HandleFunc("/", handler)
 	err := http.ListenAndServe("localhost:8080", nil)
 	if err != nil {
