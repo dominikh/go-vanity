@@ -93,8 +93,6 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	log.Println("Path:", r.URL.Path)
-
 	if r.URL.Path == "/" {
 		serveIndex(w, r)
 		return
