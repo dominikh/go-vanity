@@ -41,13 +41,13 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 	}
 	var lines []string
-	for name, _ := range packages {
+	for name := range packages {
 		lines = append(lines, fmt.Sprintf(`<li><a href="/go/%s">%s</a></li>`, name, name))
 	}
 	sort.StringSlice(lines).Sort()
 
 	html := fmt.Sprintf(`<html><body><ul>%s</ul></body></html>`, strings.Join(lines, ""))
-	w.Write([]byte(html))
+	_, _ = w.Write([]byte(html))
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -86,7 +86,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		host, pkg.Name,
 		pkg.Documentation, pkg.Source)
 
-	w.Write([]byte(html))
+	_, _ = w.Write([]byte(html))
 }
 
 func main() {
