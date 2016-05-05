@@ -1,0 +1,193 @@
+{
+  "augeas": {
+    "VCS": "git",
+    "Name": "augeas",
+    "URL": "https://github.com/dominikh/go-augeas",
+    "Source": "https://github.com/dominikh/go-augeas/",
+    "Documentation": "http://godoc.org/honnef.co/go/augeas"
+  },
+  "netdb": {
+    "VCS": "git",
+    "Name": "netdb",
+    "URL": "https://github.com/dominikh/go-netdb",
+    "Source": "https://github.com/dominikh/go-netdb/",
+    "Documentation": "http://godoc.org/honnef.co/go/netdb"
+  },
+  "conntrack": {
+    "VCS": "git",
+    "Name": "conntrack",
+    "URL": "https://github.com/dominikh/go-conntrack",
+    "Source": "https://github.com/dominikh/go-conntrack/",
+    "Documentation": "http://godoc.org/honnef.co/go/conntrack"
+  },
+  "netstat-nat": {
+    "VCS": "git",
+    "Name": "netstat-nat",
+    "URL": "https://github.com/dominikh/netstat-nat",
+    "Source": "https://github.com/dominikh/netstat-nat/",
+    "Documentation": ""
+  },
+  "ident": {
+    "VCS": "git",
+    "Name": "ident",
+    "URL": "https://github.com/dominikh/go-ident",
+    "Source": "https://github.com/dominikh/go-ident",
+    "Documentation": "http://godoc.org/honnef.co/go/ident"
+  },
+  "implements": {
+      "VCS": "git",
+      "Name": "implements",
+      "URL": "https://github.com/dominikh/implements",
+      "Source": "https://github.com/dominikh/implements",
+      "Documentation": "https://github.com/dominikh/implements/blob/master/README.md"
+  },
+  "importer": {
+      "VCS": "git",
+      "Name": "importer",
+      "URL": "https://github.com/dominikh/go-importer",
+      "Source": "https://github.com/dominikh/go-importer",
+      "Documentation": ""
+  },
+  "id3": {
+      "VCS": "git",
+      "Name": "id3",
+      "URL": "https://github.com/dominikh/go-id3",
+      "Source": "https://github.com/dominikh/go-id3",
+      "Documentation": "http://godoc.org/honnef.co/go/id3"
+  },
+  "collectd": {
+      "VCS": "git",
+      "Name": "collectd",
+      "URL": "https://github.com/dominikh/go-collectd",
+      "Source": "https://github.com/dominikh/go-collectd",
+      "Documentation": "http://godoc.org/honnef.co/go/collectd"
+  },
+  "pcap": {
+      "VCS": "git",
+      "Name": "pcap",
+      "URL": "https://github.com/dominikh/go-pcap",
+      "Source": "https://github.com/dominikh/go-pcap",
+      "Documentation": "http://godoc.org/honnef.co/go/pcap"
+  },
+  "js/console": {
+      "VCS": "git",
+      "Name": "js/console",
+      "URL": "https://github.com/dominikh/go-js-console",
+      "Source": "https://github.com/dominikh/go-js-console",
+      "Documentation": "http://godoc.org/honnef.co/go/js/console"
+  },
+  "js/util": {
+      "VCS": "git",
+      "Name": "js/util",
+      "URL": "https://github.com/dominikh/go-js-util",
+      "Source": "https://github.com/dominikh/go-js-util",
+      "Documentation": "http://godoc.org/honnef.co/go/js/util"
+  },
+  "js/dom": {
+      "VCS": "git",
+      "Name": "js/dom",
+      "URL": "https://github.com/dominikh/go-js-dom",
+      "Source": "https://github.com/dominikh/go-js-dom",
+      "Documentation": "http://godoc.org/honnef.co/go/js/dom"
+  },
+  "uzbl": {
+      "VCS": "git",
+      "Name": "uzbl",
+      "URL" :"https://github.com/dominikh/go-uzbl",
+      "Source": "https://github.com/dominikh/go-uzbl",
+      "Documentation": "http://godoc.org/honnef.co/go/uzbl"
+  },
+  "split0": {
+      "VCS": "git",
+      "Name": "split0",
+      "URL" :"https://github.com/dominikh/split0",
+      "Source": "https://github.com/dominikh/split0",
+      "Documentation": ""
+  },
+  "irc": {
+   "VCS": "git",
+   "Name": "irc",
+   "URL": "https://github.com/dominikh/go-irc",
+   "Source": "https://github.com/dominikh/go-irc",
+   "Documentation": "http://godoc.org/honnef.co/go/irc"
+  },
+  "js/xhr": {
+      "VCS": "git",
+      "Name": "js/xhr",
+      "URL": "https://github.com/dominikh/go-js-xhr",
+      "Source": "https://github.com/dominikh/go-js-xhr",
+      "Documentation": "http://godoc.org/honnef.co/go/js/xhr"
+  },
+  "js/http": {
+      "VCS": "git",
+      "Name": "js/http",
+      "URL": "https://github.com/dominikh/go-js-http",
+      "Source": "https://github.com/dominikh/go-js-http",
+      "Documentation": "http://godoc.org/honnef.co/go/js/http"
+
+  },
+  "cups": {
+      "VCS": "git",
+      "Name": "cups",
+      "URL": "https://github.com/dominikh/go-cups",
+      "Source": "https://github.com/dominikh/go-cups",
+      "Documentation": "http://godoc.org/honnef.co/go/cups"
+
+  },
+  "spew": {
+      "VCS": "git",
+      "Name": "spew",
+      "URL": "https://github.com/dominikh/go-spew",
+      "Source": "https://github.com/dominikh/go-spew",
+      "Documentation": "http://godoc.org/honnef.co/go/spew"
+  },
+  "unused": {
+    "VCS": "git",
+    "Name": "unused",
+    "URL": "https://github.com/dominikh/go-unused",
+    "Source": "https://github.com/dominikh/go-unused",
+    "Documentation": "http://godoc.org/honnef.co/go/unused"
+  },
+  "structlayout": {
+    "VCS": "git",
+    "Name": "structlayout",
+    "URL": "https://github.com/dominikh/go-structlayout",
+    "Source": "https://github.com/dominikh/go-structlayout",
+    "Documentation": "http://godoc.org/honnef.co/go/structlayout"
+  },
+  "gcsizes": {
+    "VCS": "git",
+    "Name": "gcsizes",
+    "URL": "https://github.com/dominikh/gcsizes",
+    "Source": "https://github.com/dominikh/gcsizes",
+    "Documentation": "http://godoc.org/honnef.co/go/gcsizes"
+  },
+  "simple": {
+    "VCS": "git",
+    "Name": "simple",
+    "URL": "https://github.com/dominikh/go-simple",
+    "Source": "https://github.com/dominikh/go-simple",
+    "Documentation": "http://godoc.org/honnef.co/go/simple"
+  },
+  "staticcheck": {
+    "VCS": "git",
+    "Name": "staticcheck",
+    "URL": "https://github.com/dominikh/go-staticcheck",
+    "Source": "https://github.com/dominikh/go-staticcheck",
+    "Documentation": "http://godoc.org/honnef.co/go/staticcheck"
+  },
+  "lint": {
+    "VCS": "git",
+    "Name": "lint",
+    "URL": "https://github.com/dominikh/go-lint",
+    "Source": "https://github.com/dominikh/go-lint",
+    "Documentation": "http://godoc.org/honnef.co/go/lint"
+  },
+  "keyify": {
+    "VCS": "git",
+    "Name": "keyify",
+    "URL": "https://github.com/dominikh/go-keyify",
+    "Source": "https://github.com/dominikh/go-keyify",
+    "Documentation": "http://godoc.org/honnef.co/go/keyify"
+  }
+}
