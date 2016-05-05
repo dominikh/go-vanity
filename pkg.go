@@ -1,8 +1,6 @@
 package main
 
 import (
-	"honnef.co/go/unix_socket"
-
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -22,7 +20,6 @@ type Package struct {
 }
 
 var host = os.Getenv("GO_HOST")
-var socketPath = os.Getenv("GO_SOCKET")
 
 func loadPackages() (map[string]Package, error) {
 	var packages map[string]Package
@@ -94,20 +91,9 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Please specify a valid host.")
 		os.Exit(1)
 	}
-
 	http.HandleFunc("/", handler)
-	if socketPath == "" {
-		fmt.Fprintln(os.Stderr, "Please specify a socket to listen on.")
-		os.Exit(1)
-	}
-
-	l, err := socket.Listen(socketPath, 0666)
+	err := http.ListenAndServe("localhost:8080", nil)
 	if err != nil {
-		panic(err)
-	}
-
-	err = http.Serve(l, nil)
-	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
