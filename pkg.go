@@ -108,6 +108,7 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 		errors.WithLabelValues(r.URL.Path).Inc()
 		log.Println(err)
 		http.Error(w, err.Error(), 500)
+		return
 	}
 	var pkgs Packages
 	for _, pkg := range packages {
@@ -135,6 +136,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		errors.WithLabelValues(r.URL.Path).Inc()
 		log.Println(err)
 		http.Error(w, err.Error(), 500)
+		return
 	}
 	parts := strings.Split(r.URL.Path[1:], "/")
 	var pkg Package
