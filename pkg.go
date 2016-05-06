@@ -112,10 +112,9 @@ func serveIndex(w http.ResponseWriter, r *http.Request) {
 		pkgs = append(pkgs, pkg)
 	}
 	sort.Sort(pkgs)
-	err = indexTmpl.Execute(w, packages)
-	if err, ok := pkgTmpl.Execute(w, pkgs).(texttemplate.ExecError); ok {
+	if err, ok := indexTmpl.Execute(w, packages).(texttemplate.ExecError); ok {
 		errors.WithLabelValues(r.URL.Path).Inc()
-		log.Println("error executing package template:", err)
+		log.Println("error executing index template:", err)
 	}
 }
 
