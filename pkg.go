@@ -72,8 +72,10 @@ type Package struct {
 }
 
 var (
-	base    = os.Getenv("PKGBASE")
-	pkgFile = os.Getenv("PKGFILE")
+	base             = os.Getenv("PKGBASE")
+	pkgFile          = os.Getenv("PKGFILE")
+	listen           = os.Getenv("LISTEN")
+	prometheusListen = os.Getenv("PROMETHEUS")
 )
 
 func loadPackages() (map[string]Package, error) {
@@ -169,15 +171,19 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Please specify a valid package file with the PKGFILE environment variable")
 		os.Exit(1)
 	}
-
-	go func() {
-		if err := http.ListenAndServe(":8081", prometheus.Handler()); err != nil {
-			log.Fatal(err)
-		}
-	}()
+	if listen == "" {
+		listen = ":8080"
+	}
+	if prometheusListen != "" {
+		go func() {
+			if err := http.ListenAndServe(prometheusListen, prometheus.Handler()); err != nil {
+				log.Fatal(err)
+			}
+		}()
+	}
 
 	http.HandleFunc("/", handler)
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := http.ListenAndServe(listen, nil); err != nil {
 		log.Fatal(err)
 	}
 }
