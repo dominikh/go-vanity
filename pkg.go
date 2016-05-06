@@ -163,6 +163,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	if len(os.Args) != 1 {
+		fmt.Fprintf(os.Stderr, `Usage: %s
+
+Environment variables:
+
+  LISTEN: On which host and port to serve the vanity imports. Default: ":8080"
+  PKGBASE: The base of the vanity import paths. Example: "honnef.co/go"
+  PKGFILE: The path to a JSON file describing all known packages
+  PROMETHEUS: On which host and port to serve Prometheus metrics. The
+    empty string disables Prometheus. Default: ""
+`, os.Args[0])
+		os.Exit(1)
+	}
 	if base == "" {
 		fmt.Fprintln(os.Stderr, "Please specify a valid base with the PKGBASE environment variable")
 		os.Exit(1)
