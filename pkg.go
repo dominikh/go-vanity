@@ -30,10 +30,10 @@ var indexTmpl = template.Must(template.New("").Parse(`
 var pkgTmpl = template.Must(template.New("").Parse(`
 <html>
   <head>
-    <meta name="go-import" content="{{.Host}}/{{.Pkg.Name}} {{.Pkg.VCS}} {{.Pkg.URL}}">
+    <meta name="go-import" content="{{.Base}}/{{.Pkg.Name}} {{.Pkg.VCS}} {{.Pkg.URL}}">
   </head>
   <body>
-    Install: go get -u {{.Host}}/{{.Pkg.Name}} <br>
+    Install: go get -u {{.Base}}/{{.Pkg.Name}} <br>
     <a href="{{.Pkg.Documentation}}">Documentation</a><br>
     <a href="{{.Pkg.Source}}">Source</a>
   </body>
@@ -72,7 +72,7 @@ type Package struct {
 }
 
 var (
-	host    = os.Getenv("PKGHOST")
+	base    = os.Getenv("PKGBASE")
 	pkgFile = os.Getenv("PKGFILE")
 )
 
@@ -151,18 +151,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type context struct {
-		Host string
+		Base string
 		Pkg  Package
 	}
-	if err, ok := pkgTmpl.Execute(w, context{host, pkg}).(texttemplate.ExecError); ok {
+	if err, ok := pkgTmpl.Execute(w, context{base, pkg}).(texttemplate.ExecError); ok {
 		errors.WithLabelValues(r.URL.Path).Inc()
 		log.Println("error executing package template:", err)
 	}
 }
 
 func main() {
-	if host == "" {
-		fmt.Fprintln(os.Stderr, "Please specify a valid host with the PKGHOST environment variable")
+	if base == "" {
+		fmt.Fprintln(os.Stderr, "Please specify a valid base with the PKGBASE environment variable")
 		os.Exit(1)
 	}
 	if pkgFile == "" {
